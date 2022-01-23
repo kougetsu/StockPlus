@@ -14,7 +14,7 @@ const CartItem = ({ item, onRemoveItem }) => {
           <div>
             <small>Amount ({item.stock})</small>
           </div>
-          <div>{item.amount}</div>
+          <div>{item.amount.toFixed(5)}</div>
         </FlexItem>
         <FlexItem>
           <div>
