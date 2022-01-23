@@ -49,7 +49,18 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      state.value = [...state.value, { ...action.payload, id: uuidv4() }]
+      const index = state.value.findIndex(
+        (val) => val.stock === action.payload.stock
+      )
+      if (index === -1) {
+        state.value = [...state.value, { ...action.payload, id: uuidv4() }]
+      } else {
+        state.value[index] = {
+          ...state.value[index],
+          amount: state.value[index].amount + action.payload.amount,
+          value: state.value[index].value + action.payload.value,
+        }
+      }
     },
     removeFromCart: (state, action) => {
       const newArray = state.value.filter((val) => val.id !== action.payload)
