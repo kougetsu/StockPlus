@@ -86,69 +86,14 @@ const CompareStockPrices = () => {
     setDateFilter(dateRange)
   }
 
-  useEffect(() => {
-    if (!selectedCompany) return
-
-    const fetchCompanyData = async (company) => {
-      //get api response data from cached values first if available
-      let responseData
-      if (apiResponseCache[company]) {
-        responseData = apiResponseCache[company]
-      } else {
-        //call external api
-        try {
-          const { data } = await Api.get(
-            `/v3/historical-price-full/${company}`,
-            {
-              params: {
-                serietype: 'line',
-                from: dateFilter[0].toLocaleDateString('en-CA'),
-                to: dateFilter[1].toLocaleDateString('en-CA'),
-              },
-            }
-          )
-
-          responseData = data.historical.reverse()
-          //set value to the cache for performance
-          setApiResponseCache({
-            ...apiResponseCache,
-            [company]: responseData,
-          })
-        } catch (err) {
-          console.error(err)
-          alert('Error retrieving data from API.')
-          return
-        }
-      }
-
-      //create new object and pass it to the graph
-      let dataMap = []
-      responseData.forEach((data) => {
-        dataMap[data.date] = {
-          date: data.date,
-          [selectedCompany.value]: data.close,
-        }
-      })
-
-      setGraphDataHashmap(dataMap)
-      setGraphData(Object.values(dataMap))
-    }
-
-    fetchCompanyData(selectedCompany.value)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCompany, dateFilter])
-
-  useEffect(() => {
-    if (!companyToCompare) return
-
-    const fetchCompanyData = async (company) => {
-      //get api response data from cached values first if available
-      let responseData
-      if (apiResponseCache[company]) {
-        responseData = apiResponseCache[company]
-      } else {
-        //call external api
+  const fetchCompanyData = async (company) => {
+    //get api response data from cached values first if available
+    let responseData
+    if (apiResponseCache[company]) {
+      responseData = apiResponseCache[company]
+    } else {
+      //call external api
+      try {
         const { data } = await Api.get(`/v3/historical-price-full/${company}`, {
           params: {
             serietype: 'line',
@@ -163,8 +108,40 @@ const CompareStockPrices = () => {
           ...apiResponseCache,
           [company]: responseData,
         })
-      }
 
+        return responseData
+      } catch (err) {
+        console.error(err)
+        alert('Error retrieving data from API.')
+        return
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (!selectedCompany) return
+
+    fetchCompanyData(selectedCompany.value).then((responseData) => {
+      //create new object and pass it to the graph
+      let dataMap = []
+      responseData.forEach((data) => {
+        dataMap[data.date] = {
+          date: data.date,
+          [selectedCompany.value]: data.close,
+        }
+      })
+
+      setGraphDataHashmap(dataMap)
+      setGraphData(Object.values(dataMap))
+    })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCompany, dateFilter])
+
+  useEffect(() => {
+    if (!companyToCompare) return
+
+    fetchCompanyData(companyToCompare.value).then((responseData) => {
       //create new object and pass it to the graph
       let newGraphData = graphDataHashmap
       responseData.forEach((data) => {
@@ -175,9 +152,7 @@ const CompareStockPrices = () => {
       })
 
       setGraphData(Object.values(newGraphData))
-    }
-
-    fetchCompanyData(companyToCompare.value)
+    })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [companyToCompare])
