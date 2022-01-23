@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Flex from '../common/Flex'
 import FlexItem from '../common/FlexItem'
 import CartItem from './CartItem'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCart, removeFromCart } from '../../features/cart/cartSlice'
+import {
+  clearCart,
+  removeFromCart,
+  setPaymentProcessing,
+} from '../../features/cart/cartSlice'
 import { toast } from 'react-toastify'
 import { decrementByAmount } from '../../features/accountBalance/accountBalanceSlice'
 import { addTransaction } from '../../features/transactions/transactionsSlice'
@@ -14,10 +18,9 @@ const Cart = () => {
   const cartItems = useSelector((state) => state.cart.value)
   const accountBalance = useSelector((state) => state.accountBalance.value)
   const marketOpen = useSelector((state) => state.cart.isMarketOpen)
+  const paymentProcessing = useSelector((state) => state.cart.paymentProcessing)
 
   const dispatch = useDispatch()
-
-  const [paymentProcessing, setPaymentProcessing] = useState(false)
 
   const calculateCartAmount = () => {
     if (cartItems.length === 0) return 0
@@ -54,7 +57,7 @@ const Cart = () => {
     }
 
     //simulate api call and payment process
-    setPaymentProcessing(true)
+    dispatch(setPaymentProcessing(true))
     setTimeout(() => {
       //decrease account balance by amount purchased
       dispatch(decrementByAmount(totalItemsValue))
@@ -66,11 +69,10 @@ const Cart = () => {
           items: cartItems,
         })
       )
+      dispatch(setPaymentProcessing(false))
 
       //empty cart after payment successful
       dispatch(clearCart())
-
-      setPaymentProcessing(false)
 
       //alert user
       toast.success('Payment Successful!', {
@@ -100,7 +102,11 @@ const Cart = () => {
         <Flex flexDirection='column' flexGap={10} flexWrap='wrap'>
           {cartItems.map((item) => (
             <FlexItem key={item.id}>
-              <CartItem item={item} onRemoveItem={removeCartItem} />
+              <CartItem
+                item={item}
+                disableItemDelete={paymentProcessing}
+                onRemoveItem={removeCartItem}
+              />
             </FlexItem>
           ))}
           <FlexItem>

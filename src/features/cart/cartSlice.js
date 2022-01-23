@@ -41,6 +41,7 @@ const isMarketOpen = () => {
 
 const initialState = {
   isMarketOpen: isMarketOpen(),
+  paymentProcessing: false,
   value: [],
 }
 
@@ -72,10 +73,18 @@ export const cartSlice = createSlice({
     toggleMarketStatus: (state) => {
       state.isMarketOpen = !state.isMarketOpen
     },
+    setPaymentProcessing: (state, action) => {
+      state.paymentProcessing = action.payload
+    },
   },
 })
 
-export const { addToCart, removeFromCart, clearCart, toggleMarketStatus } =
-  cartSlice.actions
+export const {
+  addToCart,
+  removeFromCart,
+  clearCart,
+  toggleMarketStatus,
+  setPaymentProcessing,
+} = cartSlice.actions
 
 export default cartSlice.reducer

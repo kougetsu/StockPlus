@@ -30,6 +30,7 @@ const AmountInput = styled.input`
 `
 
 const BuySharesForm = ({ companies }) => {
+  const paymentProcessing = useSelector((state) => state.cart.paymentProcessing)
   const dispatch = useDispatch()
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [closingPrice, setClosingPrice] = useState(null)
@@ -63,7 +64,8 @@ const BuySharesForm = ({ companies }) => {
   //perform validation and add item to the redux store
   const addItemToCart = () => {
     //validate if last closing price is currently unset or is loading from api
-    if (!closingPrice) return
+    //also cannot add items if payment is processing
+    if (!closingPrice || paymentProcessing) return
     //validate stock amount is not over 1000
     if (stockAmount > 1000) {
       toast.error('Cannot purchase more than 1000 stock at a time.', {
@@ -179,7 +181,11 @@ const BuySharesForm = ({ companies }) => {
               text={marketOpen ? 'Add To Cart' : 'Market Closed'}
               uppercase
               disabled={
-                !marketOpen || !selectedCompany || !stockAmount || !closingPrice
+                !marketOpen ||
+                !selectedCompany ||
+                !stockAmount ||
+                !closingPrice ||
+                paymentProcessing
               }
               onClick={addItemToCart}
             />

@@ -6,7 +6,12 @@ import Button from '../common/Button'
 import { FaTrash } from 'react-icons/fa'
 import formatAmount from '../../utils/formatAmount'
 
-const CartItem = ({ item, onRemoveItem }) => {
+const CartItem = ({ item, onRemoveItem, disableItemDelete }) => {
+  const handleRemoveItem = (item) => {
+    if (disableItemDelete) return
+    onRemoveItem(item)
+  }
+
   return (
     <Card padding>
       <Flex justifyContent='space-between' alignItems='center'>
@@ -26,7 +31,8 @@ const CartItem = ({ item, onRemoveItem }) => {
           <Button
             color='red'
             icon={<FaTrash></FaTrash>}
-            onClick={() => onRemoveItem(item)}
+            onClick={() => handleRemoveItem(item)}
+            disabled={disableItemDelete}
           />
         </FlexItem>
       </Flex>
