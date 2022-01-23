@@ -16,6 +16,7 @@ import { toast } from 'react-toastify'
 import moment from 'moment'
 import Api from '../services/Api'
 import formatAmount from '../utils/formatAmount'
+import companies from '../utils/companies'
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -84,33 +85,6 @@ const BuyShares = () => {
   //set the default market state based on current time
   //the UI also includes a switch to change the market state dynamically for testing purposes
   const [marketOpen, setMarketOpen] = useState(isMarketOpen)
-
-  const companies = [
-    {
-      label: 'Apple',
-      value: 'AAPL',
-    },
-    {
-      label: 'Google',
-      value: 'GOOG',
-    },
-    {
-      label: 'Facebook',
-      value: 'FB',
-    },
-    {
-      label: 'Amazon',
-      value: 'AMZN',
-    },
-    {
-      label: 'Microsoft',
-      value: 'MSFT',
-    },
-    {
-      label: 'Nvidia',
-      value: 'NVDA',
-    },
-  ]
 
   //calculate the transaction amount for one single cart item
   const calculateTransactionAmount = () => {

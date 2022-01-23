@@ -18,6 +18,7 @@ import {
 } from 'recharts'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker'
 import Card from '../components/common/Card'
+import companies from '../utils/companies'
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -41,38 +42,11 @@ const CompareStockPrices = () => {
   const [graphData, setGraphData] = useState([])
   const [apiResponseCache, setApiResponseCache] = useState({})
 
-  //set default date filter
+  //set default date
   let startDate = new Date()
   let endDate = new Date()
   startDate.setFullYear(endDate.getFullYear() - 1)
   const [dateFilter, setDateFilter] = useState([startDate, endDate])
-
-  const companies = [
-    {
-      label: 'Apple',
-      value: 'AAPL',
-    },
-    {
-      label: 'Google',
-      value: 'GOOG',
-    },
-    {
-      label: 'Facebook',
-      value: 'FB',
-    },
-    {
-      label: 'Amazon',
-      value: 'AMZN',
-    },
-    {
-      label: 'Microsoft',
-      value: 'MSFT',
-    },
-    {
-      label: 'Nvidia',
-      value: 'NVDA',
-    },
-  ]
 
   const onSelectedCompanyChange = (company) => {
     setCompanyToCompare(null)
