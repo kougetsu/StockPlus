@@ -10,9 +10,11 @@ import { addTransaction } from '../../features/transactions/transactionsSlice'
 import Button from '../common/Button'
 import formatAmount from '../../utils/formatAmount'
 
-const Cart = ({ disablePurchase }) => {
+const Cart = () => {
   const cartItems = useSelector((state) => state.cart.value)
   const accountBalance = useSelector((state) => state.accountBalance.value)
+  const marketOpen = useSelector((state) => state.cart.isMarketOpen)
+
   const dispatch = useDispatch()
 
   const [paymentProcessing, setPaymentProcessing] = useState(false)
@@ -30,7 +32,7 @@ const Cart = ({ disablePurchase }) => {
 
   const createPurchase = () => {
     //can only purchase if market is open
-    if (disablePurchase) return
+    if (!marketOpen) return
 
     const upperLimit = 1000000
     //validate having enough balance to purchase stock amount
@@ -106,7 +108,7 @@ const Cart = ({ disablePurchase }) => {
               uppercase
               text='Checkout'
               loading={paymentProcessing}
-              disabled={disablePurchase}
+              disabled={!marketOpen}
               onClick={createPurchase}
             ></Button>
           </FlexItem>
