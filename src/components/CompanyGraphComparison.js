@@ -37,60 +37,66 @@ const CompanyGraphComparison = ({ companies }) => {
   const [apiResponseCache, setApiResponseCache] = useState({})
 
   //set default date
-  let startDate = new Date()
-  let endDate = new Date()
-  startDate.setFullYear(endDate.getFullYear() - 1)
-  const [dateFilter, setDateFilter] = useState([startDate, endDate])
+  const getFilterInitialDates = () => {
+    let startDate = new Date()
+    let endDate = new Date()
+    startDate.setFullYear(endDate.getFullYear() - 1)
+    return [startDate, endDate]
+  }
+  const [dateFilter, setDateFilter] = useState(getFilterInitialDates())
 
+  //handle new selection
+  //and reset company to compare when the main one selected is changed
   const onSelectedCompanyChange = (company) => {
     setCompanyToCompare(null)
     setSelectedCompany(company)
   }
 
+  //handles date filter selection changes.
+  //reset api data cache and company to compare
   const onDateChange = (dateRange) => {
-    //reset api data cache and company to compare
     setApiResponseCache({})
     setCompanyToCompare(null)
     setDateFilter(dateRange)
   }
 
+  //get api response data from cached values first if available
+  //else fetches close prices from external api
   const fetchCompanyData = async (company) => {
-    //get api response data from cached values first if available
     let responseData
     if (apiResponseCache[company]) {
-      responseData = apiResponseCache[company]
-    } else {
-      //call external api
-      try {
-        const { data } = await Api.get(`/v3/historical-price-full/${company}`, {
-          params: {
-            serietype: 'line',
-            from: dateFilter[0].toLocaleDateString('en-CA'),
-            to: dateFilter[1].toLocaleDateString('en-CA'),
-          },
-        })
-
-        responseData = data.historical.reverse()
-        //set value to the cache for performance
-        setApiResponseCache({
-          ...apiResponseCache,
-          [company]: responseData,
-        })
-
-        return responseData
-      } catch (err) {
-        console.error(err)
-        alert('Error retrieving data from API.')
-        return
-      }
+      return apiResponseCache[company]
     }
+
+    try {
+      const { data } = await Api.get(`/v3/historical-price-full/${company}`, {
+        params: {
+          serietype: 'line',
+          from: dateFilter[0].toLocaleDateString('en-CA'),
+          to: dateFilter[1].toLocaleDateString('en-CA'),
+        },
+      })
+
+      responseData = data.historical.reverse()
+      //set value to the cache for performance
+      setApiResponseCache({
+        ...apiResponseCache,
+        [company]: responseData,
+      })
+    } catch (err) {
+      console.error(err)
+      alert('Error retrieving data from API.')
+      return
+    }
+
+    return responseData
   }
 
   useEffect(() => {
     if (!selectedCompany) return
 
     fetchCompanyData(selectedCompany.value).then((responseData) => {
-      //create new object and pass it to the graph
+      //create new object and pass it to the chart component
       let dataMap = []
       responseData.forEach((data) => {
         dataMap[data.date] = {
@@ -98,7 +104,6 @@ const CompanyGraphComparison = ({ companies }) => {
           [selectedCompany.value]: data.close,
         }
       })
-
       setGraphDataHashmap(dataMap)
       setGraphData(Object.values(dataMap))
     })
@@ -110,7 +115,7 @@ const CompanyGraphComparison = ({ companies }) => {
     if (!companyToCompare) return
 
     fetchCompanyData(companyToCompare.value).then((responseData) => {
-      //create new object and pass it to the graph
+      //add company to compare to existing graph data
       let newGraphData = graphDataHashmap
       responseData.forEach((data) => {
         newGraphData[data.date] = {
@@ -118,7 +123,6 @@ const CompanyGraphComparison = ({ companies }) => {
           [companyToCompare.value]: data.close,
         }
       })
-
       setGraphData(Object.values(newGraphData))
     })
 
