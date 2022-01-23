@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
+import { toast } from 'react-toastify'
 
 //check if Tokyo Market Exchange is open
 const isMarketOpen = () => {
@@ -56,10 +57,18 @@ export const cartSlice = createSlice({
       if (index === -1) {
         state.value = [...state.value, { ...action.payload, id: uuidv4() }]
       } else {
-        state.value[index] = {
-          ...state.value[index],
-          amount: state.value[index].amount + action.payload.amount,
-          value: state.value[index].value + action.payload.value,
+        const newAmount = state.value[index].amount + action.payload.amount
+        if (newAmount <= 1000) {
+          state.value[index] = {
+            ...state.value[index],
+            amount: state.value[index].amount + action.payload.amount,
+            value: state.value[index].value + action.payload.value,
+          }
+        } else {
+          toast.error('Cannot purchase more than 1000 stocks per company.', {
+            hideProgressBar: true,
+            autoClose: 2000,
+          })
         }
       }
     },
