@@ -9,6 +9,7 @@ import { useViewport } from '../hooks/useViewport'
 import StockMovement from '../components/StockMovement'
 import { useSelector } from 'react-redux'
 import TransactionItem from '../components/TransactionItem'
+import formatAmount from '../utils/formatAmount'
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -43,13 +44,6 @@ const Home = () => {
     return transactions
       .map((transaction) => transaction.totalAmount)
       .reduce((a, b) => a + b)
-  }
-
-  const formatAmount = (amount) => {
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount)
   }
 
   //the data below is fixed to avoid calling the API too many times

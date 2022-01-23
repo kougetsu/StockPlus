@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { decrementByAmount } from '../../features/accountBalance/accountBalanceSlice'
 import { addTransaction } from '../../features/transactions/transactionsSlice'
 import Button from '../common/Button'
+import formatAmount from '../../utils/formatAmount'
 
 const Cart = ({ disablePurchase }) => {
   const cartItems = useSelector((state) => state.cart.value)
@@ -15,13 +16,6 @@ const Cart = ({ disablePurchase }) => {
   const dispatch = useDispatch()
 
   const [paymentProcessing, setPaymentProcessing] = useState(false)
-
-  const formatAmount = (amount) => {
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount)
-  }
 
   const calculateCartAmount = () => {
     if (cartItems.length === 0) return 0
@@ -104,11 +98,7 @@ const Cart = ({ disablePurchase }) => {
         <Flex flexDirection='column' flexGap={10} flexWrap='wrap'>
           {cartItems.map((item) => (
             <FlexItem key={item.id}>
-              <CartItem
-                item={item}
-                onRemoveItem={removeCartItem}
-                formatAmount={formatAmount}
-              />
+              <CartItem item={item} onRemoveItem={removeCartItem} />
             </FlexItem>
           ))}
           <FlexItem>

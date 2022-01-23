@@ -4,8 +4,9 @@ import FlexItem from '../common/FlexItem'
 import Card from '../common/Card'
 import Button from '../common/Button'
 import { FaTrash } from 'react-icons/fa'
+import formatAmount from '../../utils/formatAmount'
 
-const CartItem = ({ item, formatAmount, onRemoveItem }) => {
+const CartItem = ({ item, onRemoveItem }) => {
   return (
     <Card padding>
       <Flex justifyContent='space-between' alignItems='center'>

@@ -15,6 +15,7 @@ import { addToCart } from '../features/cart/cartSlice'
 import { toast } from 'react-toastify'
 import moment from 'moment'
 import Api from '../services/Api'
+import formatAmount from '../utils/formatAmount'
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -110,13 +111,6 @@ const BuyShares = () => {
       value: 'NVDA',
     },
   ]
-
-  const formatAmount = (amount) => {
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount)
-  }
 
   //calculate the transaction amount for one single cart item
   const calculateTransactionAmount = () => {

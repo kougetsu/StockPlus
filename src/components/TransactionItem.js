@@ -2,17 +2,11 @@ import React from 'react'
 import Card from './common/Card'
 import Flex from './common/Flex'
 import FlexItem from './common/FlexItem'
+import formatAmount from '../utils/formatAmount'
 
 const TransactionItem = ({ transaction }) => {
   const transactionTotal = () => {
     return transaction.items.map((item) => item.value).reduce((a, b) => a + b)
-  }
-
-  const formatAmount = (amount) => {
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount)
   }
 
   return (
