@@ -1,7 +1,7 @@
 import React from 'react'
-import Card from './common/Card'
-import Flex from './common/Flex'
-import FlexItem from './common/FlexItem'
+import Card from '../common/Card'
+import Flex from '../common/Flex'
+import FlexItem from '../common/FlexItem'
 import styled from 'styled-components'
 
 const PriceMovement = styled.div.attrs((props) => ({
@@ -14,7 +14,7 @@ const PriceMovement = styled.div.attrs((props) => ({
   padding: 4px 16px;
 `
 
-const StockMovement = (props) => {
+const StockMovementCard = (props) => {
   return (
     <Card padding style={props.style}>
       <Flex justifyContent='space-between' alignItems='center' flexGap={15}>
@@ -35,4 +35,4 @@ const StockMovement = (props) => {
   )
 }
 
-export default StockMovement
+export default StockMovementCard

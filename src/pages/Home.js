@@ -6,10 +6,10 @@ import FlexItem from '../components/common/FlexItem'
 import Card from '../components/common/Card'
 import { breakpoints } from '../app/breakpoints'
 import { useViewport } from '../hooks/useViewport'
-import StockMovement from '../components/StockMovement'
 import { useSelector } from 'react-redux'
 import formatAmount from '../utils/formatAmount'
 import Transactions from '../components/transactions/Transactions'
+import StockMovements from '../components/stockMovements/StockMovements'
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -25,11 +25,6 @@ const InvestedAmountCard = styled(Card)`
   }
 `
 
-const Separator = styled.hr`
-  border-top: 1px solid #eee;
-  ${(props) => props.margin && `margin: ${props.margin}`}
-`
-
 const Home = () => {
   const { width } = useViewport()
   const transactions = useSelector((state) => state.transactions.value)
@@ -42,42 +37,6 @@ const Home = () => {
       .map((transaction) => transaction.totalAmount)
       .reduce((a, b) => a + b)
   }
-
-  //the data below is fixed to avoid calling the API too many times
-  //free account is only 250 calls per day and can only retrieve one company at a time
-  //in a production environment the data should be fetched from the API
-  const historicalPrices = [
-    {
-      company: 'AAPL',
-      changePercent: -1.28,
-      closePrice: 162.41,
-    },
-    {
-      company: 'FB',
-      changePercent: -4.23,
-      closePrice: 303.17,
-    },
-    {
-      company: 'AMZN',
-      changePercent: -5.95,
-      closePrice: 2852.86,
-    },
-    {
-      company: 'GOOG',
-      changePercent: 2.3,
-      closePrice: 2601.84,
-    },
-    {
-      company: 'MSFT',
-      changePercent: 0,
-      closePrice: 296.03,
-    },
-    {
-      company: 'NVDA',
-      changePercent: 0.5,
-      closePrice: 233.74,
-    },
-  ]
 
   return (
     <div>
@@ -105,30 +64,12 @@ const Home = () => {
           flexGap={25}
           flexWrap='wrap'
           flexDirection={width > breakpoints.md ? 'row' : 'column'}
+          style={{ marginTop: 20 }}
         >
           <FlexItem flex='1 1 0'>
-            <section style={{ marginTop: '30px' }}>
-              <h2>Stock Movements</h2>
-              <Separator margin='0 0 20px 0'></Separator>
-              <Flex flexWrap='wrap' flexGap={10}>
-                {historicalPrices.map((item) => (
-                  <FlexItem
-                    key={item.company}
-                    style={{ width: '100%' }}
-                    flex='1 1 0'
-                  >
-                    <StockMovement
-                      company={item.company}
-                      priceMovement={item.changePercent}
-                      price={formatAmount(item.closePrice)}
-                      style={{ cursor: 'pointer' }}
-                    />
-                  </FlexItem>
-                ))}
-              </Flex>
-            </section>
+            <StockMovements />
           </FlexItem>
-          <FlexItem flex='1 1 0' style={{ marginTop: 20 }}>
+          <FlexItem flex='1 1 0'>
             <Transactions limit={5} />
           </FlexItem>
         </Flex>
