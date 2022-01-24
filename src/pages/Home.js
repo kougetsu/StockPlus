@@ -8,8 +8,8 @@ import { breakpoints } from '../app/breakpoints'
 import { useViewport } from '../hooks/useViewport'
 import StockMovement from '../components/StockMovement'
 import { useSelector } from 'react-redux'
-import TransactionItem from '../components/TransactionItem'
 import formatAmount from '../utils/formatAmount'
+import Transactions from '../components/transactions/Transactions'
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -33,9 +33,6 @@ const Separator = styled.hr`
 const Home = () => {
   const { width } = useViewport()
   const transactions = useSelector((state) => state.transactions.value)
-
-  //show only the latest 5 transactions in order of purchase to the client
-  const recentTransactions = transactions.slice(0, 5).reverse()
 
   //calculate the total amount for any transactions placed
   const calculateTotalAmountInvested = () => {
@@ -131,22 +128,8 @@ const Home = () => {
               </Flex>
             </section>
           </FlexItem>
-          <FlexItem flex='1 1 0'>
-            <section style={{ marginTop: '30px' }}>
-              <h2>Latest Transactions</h2>
-              <Separator margin='0 0 20px 0'></Separator>
-            </section>
-
-            {transactions.length === 0 && <span>No Recent Activity</span>}
-
-            <Flex flexDirection='column' flexGap={10}>
-              {recentTransactions.map((transaction) => (
-                <TransactionItem
-                  key={transaction.id}
-                  transaction={transaction}
-                />
-              ))}
-            </Flex>
+          <FlexItem flex='1 1 0' style={{ marginTop: 20 }}>
+            <Transactions limit={5} />
           </FlexItem>
         </Flex>
       </PageContainer>
