@@ -1,8 +1,8 @@
 import React from 'react'
-import Card from './common/Card'
-import Flex from './common/Flex'
-import FlexItem from './common/FlexItem'
-import formatAmount from '../utils/formatAmount'
+import Card from '../common/Card'
+import Flex from '../common/Flex'
+import FlexItem from '../common/FlexItem'
+import formatAmount from '../../utils/formatAmount'
 
 const TransactionItem = ({ transaction }) => {
   const transactionTotal = () => {

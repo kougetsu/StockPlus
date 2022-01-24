@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import Flex from '../common/Flex'
-import TransactionItem from '../TransactionItem'
+import TransactionItem from './TransactionItem'
 
 const Transactions = ({ limit = 5 }) => {
   const transactions = useSelector((state) => state.transactions.value)
