@@ -75,7 +75,7 @@ export const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action) => {
-      if (!state.paymentProcessing) return
+      if (state.paymentProcessing) return
 
       const newArray = state.value.filter((val) => val.id !== action.payload)
       state.value = [...newArray]
