@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import Select from 'react-select'
 import { breakpoints } from '../../app/breakpoints'
@@ -43,7 +43,8 @@ const CompanyGraphComparison = ({ companies }) => {
     startDate.setFullYear(endDate.getFullYear() - 1)
     return [startDate, endDate]
   }
-  const [dateFilter, setDateFilter] = useState(getFilterInitialDates())
+  const filterInitialDates = useMemo(() => getFilterInitialDates(), [])
+  const [dateFilter, setDateFilter] = useState(filterInitialDates)
 
   //handle new selection
   //and reset company to compare when the main one selected is changed
