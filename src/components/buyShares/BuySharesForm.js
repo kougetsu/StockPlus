@@ -78,6 +78,8 @@ const BuySharesForm = ({ companies }) => {
         autoClose: 2000,
       })
       return
+    } else if (stockAmount <= 0) {
+      return
     }
 
     dispatch(
