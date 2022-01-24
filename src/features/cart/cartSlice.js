@@ -51,6 +51,8 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
+      if (state.paymentProcessing) return
+
       const index = state.value.findIndex(
         (val) => val.stock === action.payload.stock
       )
@@ -73,10 +75,13 @@ export const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action) => {
+      if (!state.paymentProcessing) return
+
       const newArray = state.value.filter((val) => val.id !== action.payload)
       state.value = [...newArray]
     },
     clearCart: (state) => {
+      if (state.paymentProcessing) return
       state.value = initialState.value
     },
     toggleMarketStatus: (state) => {
