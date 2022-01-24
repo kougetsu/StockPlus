@@ -6,10 +6,9 @@ import FlexItem from '../components/common/FlexItem'
 import Card from '../components/common/Card'
 import { breakpoints } from '../app/breakpoints'
 import { useViewport } from '../hooks/useViewport'
-import { useSelector } from 'react-redux'
-import formatAmount from '../utils/formatAmount'
 import Transactions from '../components/transactions/Transactions'
 import StockMovements from '../components/stockMovements/StockMovements'
+import AmountInvested from '../components/AmountInvested'
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -27,16 +26,6 @@ const InvestedAmountCard = styled(Card)`
 
 const Home = () => {
   const { width } = useViewport()
-  const transactions = useSelector((state) => state.transactions.value)
-
-  //calculate the total amount for any transactions placed
-  const calculateTotalAmountInvested = () => {
-    if (transactions.length === 0) return 0
-
-    return transactions
-      .map((transaction) => transaction.totalAmount)
-      .reduce((a, b) => a + b)
-  }
 
   return (
     <div>
@@ -53,8 +42,7 @@ const Home = () => {
           <FlexItem flex='1 1 0px'>
             <InvestedAmountCard>
               <FlexItem style={{ padding: '20px' }}>
-                <b>Amount Invested</b>
-                <div>{formatAmount(calculateTotalAmountInvested())}</div>
+                <AmountInvested />
               </FlexItem>
             </InvestedAmountCard>
           </FlexItem>
