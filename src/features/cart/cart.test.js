@@ -4,8 +4,9 @@ test('cart is empty when initialized', () => {
   expect(reducer(undefined, {}).value).toEqual([])
 })
 
-test('handle an item being added to the cart', () => {
+test('cart item has an id', () => {
   const previousState = {
+    paymentProcessing: false,
     value: [],
   }
 
@@ -26,6 +27,23 @@ test('handle an item being added to the cart', () => {
       id: expect.any(String),
     },
   ])
+})
+test('can add item to cart', () => {
+  const previousState = {
+    paymentProcessing: false,
+    value: [],
+  }
+
+  expect(
+    reducer(
+      previousState,
+      addToCart({
+        stock: 'AAPL',
+        amount: 1,
+        value: 150,
+      })
+    ).value
+  ).toHaveLength(1)
 })
 
 //this test asserts that if the same company is added to the cart,
