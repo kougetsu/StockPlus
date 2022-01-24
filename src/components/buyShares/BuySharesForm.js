@@ -23,6 +23,7 @@ const BuySharesForm = ({ companies }) => {
   const dispatch = useDispatch()
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [closingPrice, setClosingPrice] = useState(null)
+  const [priceIsLoading, setPriceIsLoading] = useState(false)
   const [stockAmount, setStockAmount] = useState('')
 
   //get the default market state from redux store based on current time and day
@@ -52,9 +53,8 @@ const BuySharesForm = ({ companies }) => {
 
   //perform validation and add item to the redux store
   const addItemToCart = () => {
-    //validate if last closing price is currently unset or is loading from api
-    //also cannot add items if payment is processing
-    if (!closingPrice || paymentProcessing) return
+    //validate that user cannot add items if payment is processing or price is loading
+    if (priceIsLoading || paymentProcessing) return
     //validate stock amount is not over 1000
     if (stockAmount > 1000) {
       toast.error('Cannot purchase more than 1000 stock at a time.', {
@@ -78,6 +78,7 @@ const BuySharesForm = ({ companies }) => {
     if (!selectedCompany) return
 
     const fetchLatestClosingPrice = async (company) => {
+      setPriceIsLoading(true)
       try {
         const { data } = await Api.get(`/v3/historical-price-full/${company}`, {
           params: {
@@ -93,10 +94,9 @@ const BuySharesForm = ({ companies }) => {
           autoClose: 2000,
         })
       }
+      setPriceIsLoading(false)
     }
 
-    //reset closing price so that user will not be able to purchase while calling the api
-    setClosingPrice(null)
     //then fetch new price
     fetchLatestClosingPrice(selectedCompany.value)
   }, [selectedCompany])
@@ -167,13 +167,21 @@ const BuySharesForm = ({ companies }) => {
           <Flex alignItems='center' flexGap={10} style={{ marginTop: 15 }}>
             <Button
               color={marketOpen ? null : 'darkred'}
-              text={marketOpen ? 'Add To Cart' : 'Market Closed'}
+              text={
+                priceIsLoading
+                  ? null
+                  : marketOpen
+                  ? 'Add To Cart'
+                  : 'Market Closed'
+              }
+              loading={priceIsLoading}
               uppercase
               disabled={
                 !marketOpen ||
                 !selectedCompany ||
                 !stockAmount ||
                 !closingPrice ||
+                priceIsLoading ||
                 paymentProcessing
               }
               onClick={addItemToCart}
