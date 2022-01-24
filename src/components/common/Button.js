@@ -52,19 +52,12 @@ const Spinner = styled(FaSpinner)`
   }
 `
 
-const Button = (props) => {
+const Button = ({ loading, ...props }) => {
   return (
-    <StyledButton
-      color={props.color}
-      textColor={props.textColor}
-      uppercase={props.uppercase}
-      style={props.style}
-      onClick={props.onClick}
-      disabled={props.disabled}
-    >
+    <StyledButton {...props}>
       <Flex alignItems='center' justifyContent='center'>
         <FlexItem>
-          {props.loading ? <Spinner /> : <ButtonIcon>{props.icon}</ButtonIcon>}
+          {loading ? <Spinner /> : <ButtonIcon>{props.icon}</ButtonIcon>}
         </FlexItem>
         {props.text && (
           <FlexItem style={{ marginLeft: 10 }}>
