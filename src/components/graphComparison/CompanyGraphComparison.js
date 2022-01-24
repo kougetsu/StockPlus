@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Select from 'react-select'
-import { breakpoints } from '../app/breakpoints'
-import { useViewport } from '../hooks/useViewport'
-import Api from '../services/Api'
-import Flex from '../components/common/Flex'
-import FlexItem from '../components/common/FlexItem'
+import { breakpoints } from '../../app/breakpoints'
+import { useViewport } from '../../hooks/useViewport'
+import Api from '../../services/Api'
+import Flex from '../common/Flex'
+import FlexItem from '../common/FlexItem'
 import {
   LineChart,
   Line,
@@ -17,7 +17,7 @@ import {
   Legend,
 } from 'recharts'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker'
-import Card from '../components/common/Card'
+import Card from '../common/Card'
 
 const StyledDatePicker = styled(DateRangePicker)`
   margin-top: 10px;

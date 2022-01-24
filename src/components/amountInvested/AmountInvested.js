@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import formatAmount from '../utils/formatAmount'
+import formatAmount from '../../utils/formatAmount'
 
 const AmountInvested = () => {
   const transactions = useSelector((state) => state.transactions.value)

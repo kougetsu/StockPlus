@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import companies from '../utils/companies'
-import BuySharesForm from '../components/BuySharesForm'
+import BuySharesForm from '../components/buyShares/BuySharesForm'
 import Cart from '../components/cart/Cart'
 
 const PageContainer = styled.div`

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import companies from '../utils/companies'
-import CompanyGraphComparison from '../components/CompanyGraphComparison'
+import CompanyGraphComparison from '../components/graphComparison/CompanyGraphComparison'
 
 const PageContainer = styled.div`
   padding: 20px;

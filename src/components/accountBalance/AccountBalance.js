@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { incrementByAmount } from '../features/accountBalance/accountBalanceSlice'
-import Button from './common/Button'
+import { incrementByAmount } from '../../features/accountBalance/accountBalanceSlice'
+import Button from '../common/Button'
 import { FaCreditCard } from 'react-icons/fa'
-import { breakpoints } from '../app/breakpoints'
+import { breakpoints } from '../../app/breakpoints'
 import styled from 'styled-components'
 
 const BalanceContainer = styled.div`

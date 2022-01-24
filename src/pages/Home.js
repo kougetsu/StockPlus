@@ -1,5 +1,5 @@
 import React from 'react'
-import AccountBalance from '../components/AccountBalance'
+import AccountBalance from '../components/accountBalance/AccountBalance'
 import styled from 'styled-components'
 import Flex from '../components/common/Flex'
 import FlexItem from '../components/common/FlexItem'
@@ -8,7 +8,7 @@ import { breakpoints } from '../app/breakpoints'
 import { useViewport } from '../hooks/useViewport'
 import Transactions from '../components/transactions/Transactions'
 import StockMovements from '../components/stockMovements/StockMovements'
-import AmountInvested from '../components/AmountInvested'
+import AmountInvested from '../components/amountInvested/AmountInvested'
 
 const PageContainer = styled.div`
   padding: 20px;
