@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import Flex from '../common/Flex'
 import FlexItem from '../common/FlexItem'
@@ -21,14 +21,30 @@ const AccountBalanceWrapper = styled.div`
 const BuySharesForm = ({ companies }) => {
   const paymentProcessing = useSelector((state) => state.cart.paymentProcessing)
   const dispatch = useDispatch()
-  const [selectedCompany, setSelectedCompany] = useState(null)
   const [closingPrice, setClosingPrice] = useState(null)
   const [priceIsLoading, setPriceIsLoading] = useState(false)
   const [stockAmount, setStockAmount] = useState('')
-
   //get the default market state from redux store based on current time and day
   //the UI also includes a switch to change the market state dynamically for testing purposes
   const marketOpen = useSelector((state) => state.cart.isMarketOpen)
+
+  const selectCompanyFromUrl = () => {
+    const companyFromUrl = new URLSearchParams(window.location.search).get(
+      'company'
+    )
+    if (companyFromUrl) {
+      const index = companies.findIndex(
+        (company) => company.value === companyFromUrl
+      )
+      if (index !== -1) {
+        return companies[index]
+      }
+    }
+  }
+  //set a default company selection based on URL search params
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const defaultSelectedCompany = useMemo(() => selectCompanyFromUrl(), [])
+  const [selectedCompany, setSelectedCompany] = useState(defaultSelectedCompany)
 
   //calculate the transaction amount for one single cart item
   const calculateTransactionAmount = () => {
