@@ -12,21 +12,10 @@ import { addToCart, toggleMarketStatus } from '../../features/cart/cartSlice'
 import { toast } from 'react-toastify'
 import Api from '../../services/Api'
 import formatAmount from '../../utils/formatAmount'
+import Input from '../common/Input'
 
 const AccountBalanceWrapper = styled.div`
   margin-bottom: 12px;
-`
-
-const AmountInput = styled.input`
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: 4px;
-  border: 1px solid hsl(0, 0%, 80%);
-  min-height: 38px;
-  outline: 0 !important;
-  padding: 2px 8px;
-  font-size: 1.05rem;
-  margin-top: 10px;
 `
 
 const BuySharesForm = ({ companies }) => {
@@ -146,7 +135,7 @@ const BuySharesForm = ({ companies }) => {
           value={selectedCompany}
           onChange={(company) => setSelectedCompany(company)}
         ></Select>
-        <AmountInput
+        <Input
           type='number'
           step='0.1'
           min='0'
@@ -157,7 +146,7 @@ const BuySharesForm = ({ companies }) => {
           onKeyDown={
             (e) => ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault() //prevent using non numeric values in input
           }
-        ></AmountInput>
+        ></Input>
 
         <div style={{ marginTop: 15 }}>
           <Flex justifyContent='space-between' flexGap={8}>
