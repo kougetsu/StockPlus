@@ -3,8 +3,10 @@ import Flex from '../common/Flex'
 import FlexItem from '../common/FlexItem'
 import StockMovementCard from './StockMovementCard.js'
 import formatAmount from '../../utils/formatAmount'
+import { useNavigate } from 'react-router-dom'
 
 const StockMovements = () => {
+  const navigate = useNavigate()
   //the data below is fixed to avoid calling the API too many times
   //free account is only 250 calls per day and can only retrieve one company at a time
   //in a production environment the data should be fetched from the API
@@ -48,12 +50,14 @@ const StockMovements = () => {
       <Flex flexWrap='wrap' flexGap={10}>
         {historicalPrices.map((item) => (
           <FlexItem key={item.company} style={{ width: '100%' }} flex='1 1 0'>
-            <StockMovementCard
-              company={item.company}
-              priceMovement={item.changePercent}
-              price={formatAmount(item.closePrice)}
-              style={{ cursor: 'pointer' }}
-            />
+            <div onClick={() => navigate(`/buy?company=${item.company}`)}>
+              <StockMovementCard
+                company={item.company}
+                priceMovement={item.changePercent}
+                price={formatAmount(item.closePrice)}
+                style={{ cursor: 'pointer' }}
+              />
+            </div>
           </FlexItem>
         ))}
       </Flex>
