@@ -8,6 +8,8 @@ A switch to change the global state at any time has also been provided for testi
 The user of this application can only add a maximum of 1000 stocks per company at a time to their cart and there is a maximum purchase limit of 1,000,000$ for each transaction.
 When a purchase is made, a transaction is added to the store and the client can see the total amount they have invested and their most recent purchases on the Dashboard.
 
+**Build folder is included in the project.**
+
 ### Environment & External Components Used
 
 - [Create React App](https://github.com/facebook/create-react-app).
