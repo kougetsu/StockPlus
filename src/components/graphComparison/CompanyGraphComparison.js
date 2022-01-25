@@ -22,6 +22,10 @@ import Card from '../common/Card'
 const StyledDatePicker = styled(DateRangePicker)`
   margin-top: 10px;
   background-color: #fff;
+  &.react-daterange-picker .react-daterange-picker__wrapper {
+    border-radius: 4px;
+    border-color: #ccc;
+  }
 
   @media screen and (max-width: ${breakpoints.sm}px) {
     width: 100%;
@@ -94,7 +98,7 @@ const CompanyGraphComparison = ({ companies }) => {
   }
 
   useEffect(() => {
-    if (!selectedCompany) return
+    if (!selectedCompany || !dateFilter) return
 
     fetchCompanyData(selectedCompany.value).then((responseData) => {
       //create new object and pass it to the chart component
