@@ -26,7 +26,8 @@ When a purchase is made, a transaction is added to the store and the client can 
 ### API Description
 
 The API Service is provided by [FMP](https://site.financialmodelingprep.com/).
-A default API key has been included in the services/Api.js file and can be changed by modifying the default axios params.
+The API key is added to calls automatically when creating the axios instance in the services/Api.js file.A default key is **NOT** provided and you must add your own by creating a .env file with the variable REACT_APP_API_KEY="YOURAPPKEY"
+
 **Due to the free API only allowing the user to retrieve one company's stock prices at a time, and the fact that there is also a 250 call daily limit, the app is only able to load or compare stock prices one at a time.**
 
 ### Common Components & Hooks
